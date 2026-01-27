@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Redact</title>
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <link rel="stylesheet" href="/src/styles/upload.css" />
+  <link rel="stylesheet" href="/src/styles/player.css" />
+  <link rel="stylesheet" href="/src/styles/timeline.css" />
+  <link rel="stylesheet" href="/src/styles/toolbar.css" />
+  <link rel="stylesheet" href="/src/styles/modal.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Upload Screen -->
+    <div id="upload-screen" class="screen active">
+      <div class="drop-zone" id="drop-zone">
+        <div class="drop-zone-content">
+          <div class="drop-zone-icon">&#9654;</div>
+          <h2>Drop media here</h2>
+          <p>or click to browse</p>
+          <p class="drop-zone-hint">Videos: MP4, WebM, MOV, MKV | Images: JPG, PNG, WebP, GIF</p>
+          <input type="file" id="file-input" accept="video/*,image/*,.mkv,.avi,.mov" hidden />
+        </div>
+      </div>
+    </div>
+
+    <!-- Editor Screen -->
+    <div id="editor-screen" class="screen">
+      <!-- Toolbar -->
+      <div id="toolbar">
+        <div class="toolbar-group">
+          <button id="tool-select" class="tool-btn active" data-keybind="select">Select</button>
+          <button id="tool-draw" class="tool-btn" data-keybind="draw">Draw</button>
+        </div>
+        <div class="toolbar-group">
+          <button id="type-solid" class="type-btn active" data-keybind="typeSolid">Solid</button>
+          <button id="type-blur" class="type-btn" data-keybind="typeBlur">Blur</button>
+          <button id="type-pixel" class="type-btn" data-keybind="typePixel">Pixel</button>
+          <button id="type-anti" class="type-btn" data-keybind="typeAnti">Anti</button>
+        </div>
+        <div class="toolbar-group">
+          <label class="toolbar-label">
+            Color: <input type="color" id="box-color" value="#000000" />
+          </label>
+          <label class="toolbar-label" id="blur-intensity-group">
+            Intensity: <input type="range" id="blur-intensity" min="1" max="20" value="10" />
+          </label>
+        </div>
+        <div class="toolbar-group toolbar-right">
+          <button id="editing-mode-btn" data-keybind="editingMode">Outlines</button>
+          <button id="undo-btn" data-keybind="undo">Undo</button>
+          <button id="redo-btn" data-keybind="redo">Redo</button>
+          <button id="settings-btn" title="Settings">&#9881;</button>
+          <button id="import-btn" title="Import new media">Import</button>
+          <button id="export-btn" class="primary-btn">Export</button>
+        </div>
+      </div>
+
+      <!-- Main content area -->
+      <div id="editor-main">
+        <div id="canvas-area">
+          <canvas id="canvas"></canvas>
+          <video id="video" hidden></video>
+        </div>
+        <div id="property-panel">
+          <h3>Properties</h3>
+          <div id="property-content" class="no-selection">
+            <p class="hint">Select a box to edit</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Playback controls -->
+      <div id="playback-controls">
+        <button id="btn-step-back-5" title="Back 5s">&#9194;</button>
+        <button id="btn-step-back" title="Previous frame">&#9664;</button>
+        <button id="btn-play" title="Play/Pause (Space)">&#9654;</button>
+        <button id="btn-step-forward" title="Next frame">&#9654;</button>
+        <button id="btn-step-forward-5" title="Forward 5s">&#9193;</button>
+        <span id="time-display">00:00.00 / 00:00.00</span>
+      </div>
+
+      <!-- Timeline -->
+      <div id="timeline">
+        <div id="timeline-header">
+          <button id="timeline-expand" title="Expand/collapse timeline">&#9650;</button>
+          <div id="timeline-zoom">
+            <button id="zoom-out">-</button>
+            <button id="zoom-in">+</button>
+          </div>
+        </div>
+        <div id="timeline-body">
+          <canvas id="timeline-ruler"></canvas>
+          <div id="timeline-playhead"></div>
+          <div id="timeline-spans"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div id="export-modal" class="modal" hidden>
+    <div class="modal-content">
+      <h3>Exporting Video</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" id="export-progress"></div>
+      </div>
+      <p id="export-status">Initializing...</p>
+      <button id="export-cancel" class="secondary-btn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal" hidden>
+    <div class="modal-content modal-settings">
+      <div class="modal-header">
+        <h3>Keyboard Shortcuts</h3>
+        <button id="settings-close" class="close-btn">&times;</button>
+      </div>
+      <div id="keybind-list"></div>
+      <div class="modal-footer">
+        <button id="keybind-reset" class="secondary-btn">Reset to Defaults</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div id="confirm-modal" class="modal" hidden>
+    <div class="modal-content modal-confirm">
+      <h3 id="confirm-title">Confirm</h3>
+      <p id="confirm-message">Are you sure?</p>
+      <div class="confirm-buttons">
+        <button id="confirm-cancel" class="secondary-btn">Cancel</button>
+        <button id="confirm-ok" class="danger-btn">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolbar-group + .toolbar-group {
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+.toolbar-right {
+  margin-left: auto;
+  border-left: none !important;
+  padding-left: 0 !important;
+}
+
+.tool-btn, .type-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.toolbar-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  gap: 6px;
+}
+
+.toolbar-label input[type="color"] {
+  width: 28px;
+  height: 24px;
+  padding: 1px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#property-panel {
+  width: 220px;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border);
+  padding: 12px;
+  overflow-y: auto;
+}
+
+#property-panel h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.prop-group {
+  margin-bottom: 10px;
+}
+
+.prop-group label {
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.prop-group input[type="number"] {
+  width: 70px;
+}
+
+.prop-group select {
+  width: 100%;
+}
+
+.prop-group input[type="range"] {
+  width: 100%;
+}
+
+.prop-group .danger-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.prop-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.prop-actions button {
+  flex: 1;
+  margin-top: 0;
+}
+
+.no-selection .hint {
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-align: center;
+  margin-top: 40px;
+}
