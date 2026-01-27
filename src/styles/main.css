@@ -1,14 +1,81 @@
 :root {
-  --bg-primary: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-  --bg-tertiary: #25253a;
-  --text-primary: #e0e0e0;
-  --text-secondary: #999;
-  --accent: #00aaff;
-  --accent-hover: #0088cc;
-  --danger: #ff4444;
-  --border: #333;
+  /* Radii */
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* Sizing */
   --handle-size: 8px;
+}
+
+/* Dark theme (default) - warm brown undertones */
+:root,
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg: #1C1A17;
+  --bg-card: #252320;
+  --bg-hover: #2E2B27;
+  --bg-canvas: #141210;
+
+  /* Text */
+  --text: #E8E4DE;
+  --text-muted: #9A958E;
+
+  /* Structure */
+  --border: #3A3632;
+  --border-strong: #4A4540;
+  --accent: #C9A882;
+  --accent-hover: #D4B896;
+  --accent-light: #3A3530;
+
+  /* Semantic */
+  --danger: #D47272;
+  --danger-hover: #E08585;
+  --success: #7DB882;
+
+  /* Effects */
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  /* Timeline ruler (for JS) */
+  --ruler-bg: #1C1A17;
+  --ruler-text: #9A958E;
+  --ruler-tick: #4A4540;
+  --ruler-tick-minor: #3A3632;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg: #FDFBF7;
+  --bg-card: #FFFFFF;
+  --bg-hover: #F8F6F2;
+  --bg-canvas: #E8E4DE;
+
+  /* Text */
+  --text: #2D2A26;
+  --text-muted: #7A756E;
+
+  /* Structure */
+  --border: #E8E4DE;
+  --border-strong: #D4CFC6;
+  --accent: #8B7355;
+  --accent-hover: #7A6548;
+  --accent-light: #F0EBE4;
+
+  /* Semantic */
+  --danger: #C45D5D;
+  --danger-hover: #B34D4D;
+  --success: #6B9B6F;
+
+  /* Effects */
+  --shadow: 0 2px 8px rgba(45, 42, 38, 0.08);
+  --shadow-lg: 0 8px 24px rgba(45, 42, 38, 0.12);
+
+  /* Timeline ruler (for JS) */
+  --ruler-bg: #FDFBF7;
+  --ruler-text: #7A756E;
+  --ruler-tick: #D4CFC6;
+  --ruler-tick-minor: #E8E4DE;
 }
 
 * {
@@ -20,10 +87,13 @@
 html, body {
   height: 100%;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
-  color: var(--text-primary);
-  background: var(--bg-primary);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #app {
@@ -42,18 +112,36 @@ html, body {
   flex-direction: column;
 }
 
+/* Headings use serif */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+/* Buttons */
 button {
   cursor: pointer;
   border: 1px solid var(--border);
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 13px;
+  background: var(--bg-card);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 button:hover {
-  background: #333350;
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+button:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 button:disabled {
@@ -67,19 +155,31 @@ button.active {
   color: #fff;
 }
 
+button.active:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
 .primary-btn {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
-  font-weight: 600;
 }
 
 .primary-btn:hover {
   background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .secondary-btn {
-  background: var(--bg-tertiary);
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.secondary-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text);
 }
 
 .danger-btn {
@@ -89,30 +189,109 @@ button.active {
 }
 
 .danger-btn:hover {
-  background: #cc3333;
+  background: var(--danger-hover);
+  border-color: var(--danger-hover);
 }
 
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  font-size: 18px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle-btn:hover {
+  transform: rotate(15deg) scale(1.1);
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.9);
+}
+
+/* Form inputs */
 input[type="number"],
 input[type="text"],
 select {
-  background: var(--bg-primary);
+  background: var(--bg-card);
   border: 1px solid var(--border);
-  color: var(--text-primary);
-  padding: 4px 8px;
-  border-radius: 3px;
-  font-size: 13px;
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
   width: 80px;
+  transition: border-color 0.2s ease;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 input[type="range"] {
-  width: 80px;
+  width: 100px;
   vertical-align: middle;
+  accent-color: var(--accent);
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: 1px solid var(--border);
+  border-radius: 4px;
 }
 
 label {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: var(--text-secondary);
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent-light);
+  color: var(--text);
 }

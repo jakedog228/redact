@@ -205,9 +205,14 @@ export function renderSelectionHandles(ctx, box, canvasW, canvasH, isActive = tr
   const pw = box.width * canvasW;
   const ph = box.height * canvasH;
 
+  // Read accent color from CSS variables
+  const style = getComputedStyle(document.documentElement);
+  const accentColor = style.getPropertyValue('--accent').trim() || '#C9A882';
+  const bgColor = style.getPropertyValue('--bg-card').trim() || '#252320';
+
   if (!isActive) {
     // Dashed outline for selected but inactive box
-    ctx.strokeStyle = '#00aaff';
+    ctx.strokeStyle = accentColor;
     ctx.lineWidth = 2;
     ctx.setLineDash([6, 4]);
     ctx.globalAlpha = 0.6;
@@ -218,7 +223,7 @@ export function renderSelectionHandles(ctx, box, canvasW, canvasH, isActive = tr
   }
 
   // Draw solid border
-  ctx.strokeStyle = '#00aaff';
+  ctx.strokeStyle = accentColor;
   ctx.lineWidth = 2;
   ctx.strokeRect(px, py, pw, ph);
 
@@ -235,9 +240,9 @@ export function renderSelectionHandles(ctx, box, canvasW, canvasH, isActive = tr
     { x: px, y: py + ph / 2 },                    // w
   ];
 
-  ctx.fillStyle = '#ffffff';
-  ctx.strokeStyle = '#00aaff';
-  ctx.lineWidth = 1;
+  ctx.fillStyle = bgColor;
+  ctx.strokeStyle = accentColor;
+  ctx.lineWidth = 1.5;
   for (const h of handles) {
     ctx.fillRect(h.x - hs / 2, h.y - hs / 2, hs, hs);
     ctx.strokeRect(h.x - hs / 2, h.y - hs / 2, hs, hs);
@@ -255,7 +260,13 @@ export function renderEditingOutlines(ctx, activeBoxes, canvasW, canvasH, select
     const pw = box.width * canvasW;
     const ph = box.height * canvasH;
 
-    ctx.strokeStyle = box.type === 'blur' ? '#9a7aed' : box.type === 'pixel' ? '#ed7a9a' : box.type === 'anti' ? '#22cc66' : box.color === '#000000' ? '#666' : box.color;
+    // Use warm, muted colors for editing outlines
+    const outlineColors = {
+      blur: '#9B8AC4',   // soft purple
+      pixel: '#E8A87C', // soft orange
+      anti: '#8BC49A',  // soft green
+    };
+    ctx.strokeStyle = outlineColors[box.type] || (box.color === '#000000' ? '#7A756E' : box.color);
     ctx.lineWidth = 1.5;
     ctx.setLineDash([4, 3]);
     ctx.globalAlpha = 0.7;

@@ -38,7 +38,9 @@ export function initPlayer() {
   });
 
   subscribe('SET_PLAYING', (state) => {
-    btnPlay.textContent = state.playing ? '\u23F8' : '\u25B6';
+    const playIcon = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    const pauseIcon = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+    btnPlay.innerHTML = state.playing ? pauseIcon : playIcon;
   });
 }
 

@@ -1,5 +1,5 @@
 #timeline {
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   border-top: 1px solid var(--border);
 }
 
@@ -7,24 +7,26 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 12px;
+  padding: 8px 24px;
   border-bottom: 1px solid var(--border);
 }
 
 #timeline-expand {
-  width: 28px;
-  height: 22px;
+  width: 32px;
+  height: 28px;
   padding: 0;
   font-size: 10px;
-  background: var(--bg-tertiary);
+  background: var(--bg);
   border: 1px solid var(--border);
-  color: var(--text-secondary);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: transform 0.2s, background 0.1s;
+  transition: transform 0.2s ease, background 0.2s ease;
+  border-radius: var(--radius-sm);
 }
 
 #timeline-expand:hover {
-  background: var(--bg-hover);
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
 #timeline-expand.expanded {
@@ -33,15 +35,20 @@
 
 #timeline-zoom {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 #timeline-zoom button {
-  width: 24px;
-  height: 22px;
+  width: 32px;
+  height: 28px;
   padding: 0;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 600;
+  background: var(--bg);
+}
+
+#timeline-zoom button:hover {
+  background: var(--accent-light);
 }
 
 #timeline-body {
@@ -50,16 +57,17 @@
   overflow-y: hidden;
   height: 120px;
   transition: height 0.2s ease;
+  background: var(--bg);
 }
 
 #timeline-body.expanded {
-  height: 300px;
+  height: 280px;
   overflow-y: auto;
 }
 
 #timeline-ruler {
   display: block;
-  height: 30px;
+  height: 32px;
   cursor: pointer;
 }
 
@@ -88,40 +96,42 @@
 #timeline-spans {
   position: relative;
   min-height: 60px;
-  padding-top: 4px;
+  padding-top: 6px;
 }
 
 .span-lane {
   position: absolute;
   left: 0;
   right: 0;
-  height: 24px;
+  height: 28px;
   display: flex;
   align-items: center;
 }
 
 .span-drag-handle {
   position: sticky;
-  left: 4px;
-  width: 16px;
-  height: 18px;
-  background: var(--bg-tertiary);
+  left: 8px;
+  width: 18px;
+  height: 20px;
+  background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: grab;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
-  color: var(--text-secondary);
+  font-size: 12px;
+  color: var(--text-muted);
   flex-shrink: 0;
   z-index: 5;
-  margin-right: -16px;
+  margin-right: -18px;
+  transition: all 0.2s ease;
 }
 
 .span-drag-handle:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .span-drag-handle:active {
@@ -139,13 +149,14 @@
 
 .span-bar {
   position: absolute;
-  height: 20px;
-  top: 2px;
-  border-radius: 3px;
-  opacity: 0.7;
+  height: 22px;
+  top: 3px;
+  border-radius: 6px;
+  opacity: 0.85;
   cursor: grab;
-  min-width: 4px;
-  transition: opacity 0.1s;
+  min-width: 6px;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  box-shadow: 0 1px 3px rgba(45, 42, 38, 0.15);
 }
 
 .span-bar:active {
@@ -153,33 +164,42 @@
 }
 
 .span-bar:hover {
-  opacity: 0.9;
+  opacity: 1;
+  transform: scaleY(1.05);
 }
 
 .span-bar.selected {
   opacity: 1;
   outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline-offset: 2px;
 }
 
 .span-handle {
   position: absolute;
   top: 0;
-  width: 6px;
+  width: 8px;
   height: 100%;
   cursor: ew-resize;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.span-bar:hover .span-handle {
+  opacity: 1;
 }
 
 .span-handle:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .span-handle-left {
   left: 0;
+  border-radius: 6px 0 0 6px;
 }
 
 .span-handle-right {
   right: 0;
+  border-radius: 0 6px 6px 0;
 }

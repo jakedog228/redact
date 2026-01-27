@@ -152,9 +152,11 @@ function renderFrame() {
   // Draw preview box if drawing
   const preview = getDrawPreview();
   if (preview) {
-    ctx.strokeStyle = '#00aaff';
+    const style = getComputedStyle(document.documentElement);
+    const accentColor = style.getPropertyValue('--accent').trim() || '#C9A882';
+    ctx.strokeStyle = accentColor;
     ctx.lineWidth = 2;
-    ctx.setLineDash([5, 5]);
+    ctx.setLineDash([6, 4]);
     ctx.strokeRect(
       preview.x * w,
       preview.y * h,

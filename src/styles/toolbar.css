@@ -1,9 +1,10 @@
+/* Toolbar */
 #toolbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 16px;
-  background: var(--bg-secondary);
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--bg-card);
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
@@ -11,11 +12,11 @@
 .toolbar-group {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .toolbar-group + .toolbar-group {
-  padding-left: 12px;
+  padding-left: 16px;
   border-left: 1px solid var(--border);
 }
 
@@ -26,49 +27,64 @@
 }
 
 .tool-btn, .type-btn {
-  padding: 5px 10px;
-  font-size: 12px;
+  padding: 8px 14px;
+  font-size: 13px;
+  background: var(--bg);
+}
+
+.tool-btn:hover, .type-btn:hover {
+  background: var(--accent-light);
 }
 
 .toolbar-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+  gap: 8px;
 }
 
 .toolbar-label input[type="color"] {
-  width: 28px;
-  height: 24px;
-  padding: 1px;
+  width: 32px;
+  height: 28px;
+  padding: 2px;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  background: var(--bg-card);
 }
 
+.toolbar-label input[type="range"] {
+  width: 100px;
+}
+
+/* Property Panel */
 #property-panel {
-  width: 220px;
-  background: var(--bg-secondary);
-  border-left: 1px solid var(--border);
-  padding: 12px;
+  width: 240px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 20px;
   overflow-y: auto;
+  box-shadow: var(--shadow);
+  flex-shrink: 0;
 }
 
 #property-panel h3 {
-  font-size: 13px;
+  font-size: 11px;
+  font-family: 'Outfit', sans-serif;
   font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--text-secondary);
+  margin-bottom: 16px;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .prop-group {
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .prop-group label {
-  margin-bottom: 6px;
-  font-size: 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .prop-group input[type="number"] {
@@ -77,31 +93,37 @@
 
 .prop-group select {
   width: 100%;
+  padding: 10px 12px;
 }
 
 .prop-group input[type="range"] {
   width: 100%;
 }
 
-.prop-group .danger-btn {
-  width: 100%;
-  margin-top: 8px;
+.prop-group input[type="color"] {
+  width: 36px;
+  height: 32px;
+  border-radius: var(--radius-sm);
 }
 
 .prop-actions {
   display: flex;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 .prop-actions button {
   flex: 1;
-  margin-top: 0;
+  padding: 10px 12px;
+  font-size: 13px;
 }
 
 .no-selection .hint {
-  color: var(--text-secondary);
-  font-size: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 32px;
+  line-height: 1.6;
 }

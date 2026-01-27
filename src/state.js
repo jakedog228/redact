@@ -25,6 +25,7 @@ const state = {
   timelineZoom: 1,
   timelineScroll: 0,
   editingMode: false,
+  theme: 'dark',
 };
 
 const listeners = {};
@@ -41,6 +42,9 @@ export function getState(key) {
  */
 export function dispatch(action, payload) {
   switch (action) {
+    case 'SET_THEME':
+      state.theme = payload;
+      break;
     case 'SET_VIDEO':
       state.mediaType = 'video';
       state.mediaFile = payload.file;

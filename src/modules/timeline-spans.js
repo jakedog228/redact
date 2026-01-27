@@ -57,7 +57,7 @@ function renderSpans() {
     // Drag handle for reordering
     const dragHandle = document.createElement('div');
     dragHandle.className = 'span-drag-handle';
-    dragHandle.innerHTML = '&#8942;'; // vertical ellipsis
+    dragHandle.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>';
     dragHandle.title = 'Drag to reorder';
     dragHandle.addEventListener('mousedown', (e) => {
       e.stopPropagation();
@@ -107,9 +107,12 @@ function renderSpans() {
 }
 
 function getSpanColor(box) {
-  if (box.type === 'blur') return '#6a5acd';
-  if (box.type === 'pixel') return '#cd5a6a';
-  if (box.type === 'anti') return '#22cc66';
+  // Use warm, muted colors matching the philosophy palette
+  if (box.type === 'blur') return '#9B8AC4';  // soft purple
+  if (box.type === 'pixel') return '#E8A87C'; // soft peach
+  if (box.type === 'anti') return '#8BC49A';  // soft green
+  // For solid boxes, if black, use warm charcoal
+  if (box.color === '#000000') return '#2D2A26';
   return box.color;
 }
 

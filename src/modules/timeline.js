@@ -42,6 +42,7 @@ export function initTimeline() {
   subscribe('SET_ZOOM', () => { drawRuler(); updatePlayhead(); });
   subscribe('SET_VIDEO', () => { resizeRuler(); drawRuler(); });
   subscribe('SET_TIMELINE_SCROLL', () => { drawRuler(); updatePlayhead(); });
+  subscribe('SET_THEME', drawRuler);
 
   timelineBody.addEventListener('scroll', () => {
     dispatch('SET_TIMELINE_SCROLL', timelineBody.scrollLeft);
@@ -73,9 +74,17 @@ function drawRuler() {
   rulerCanvas.style.width = totalWidth + 'px';
 
   const ctx = rulerCtx;
-  ctx.clearRect(0, 0, totalWidth, 30);
-  ctx.fillStyle = '#1a1a2e';
-  ctx.fillRect(0, 0, totalWidth, 30);
+  ctx.clearRect(0, 0, totalWidth, 32);
+
+  // Read colors from CSS variables
+  const style = getComputedStyle(document.documentElement);
+  const bgColor = style.getPropertyValue('--ruler-bg').trim() || style.getPropertyValue('--bg').trim();
+  const textColor = style.getPropertyValue('--ruler-text').trim() || style.getPropertyValue('--text-muted').trim();
+  const tickColor = style.getPropertyValue('--ruler-tick').trim() || style.getPropertyValue('--border-strong').trim();
+  const tickMinorColor = style.getPropertyValue('--ruler-tick-minor').trim() || style.getPropertyValue('--border').trim();
+
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, totalWidth, 32);
 
   // Calculate tick interval
   const pxPerSec = totalWidth / duration;
@@ -88,16 +97,16 @@ function drawRuler() {
     }
   }
 
-  ctx.strokeStyle = '#444';
-  ctx.fillStyle = '#aaa';
-  ctx.font = '10px monospace';
+  ctx.strokeStyle = tickColor;
+  ctx.fillStyle = textColor;
+  ctx.font = "500 11px 'Outfit', sans-serif";
   ctx.textAlign = 'center';
 
   for (let t = 0; t <= duration; t += tickInterval) {
     const x = (t / duration) * totalWidth;
     ctx.beginPath();
-    ctx.moveTo(x, 20);
-    ctx.lineTo(x, 30);
+    ctx.moveTo(x, 22);
+    ctx.lineTo(x, 32);
     ctx.stroke();
     ctx.fillText(formatTime(t), x, 14);
   }
@@ -105,12 +114,12 @@ function drawRuler() {
   // Minor ticks
   const minorInterval = tickInterval / 4;
   if (minorInterval * pxPerSec >= 5) {
-    ctx.strokeStyle = '#333';
+    ctx.strokeStyle = tickMinorColor;
     for (let t = 0; t <= duration; t += minorInterval) {
       const x = (t / duration) * totalWidth;
       ctx.beginPath();
-      ctx.moveTo(x, 25);
-      ctx.lineTo(x, 30);
+      ctx.moveTo(x, 26);
+      ctx.lineTo(x, 32);
       ctx.stroke();
     }
   }
