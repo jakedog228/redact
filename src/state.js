@@ -93,7 +93,7 @@ export function dispatch(action, payload) {
       state.boxes = payload;
       break;
     case 'ADD_BOX':
-      state.boxes = [...state.boxes, payload];
+      state.boxes = [payload, ...state.boxes];
       break;
     case 'UPDATE_BOX':
       state.boxes = state.boxes.map(b => b.id === payload.id ? { ...b, ...payload } : b);
