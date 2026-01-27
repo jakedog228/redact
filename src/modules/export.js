@@ -235,7 +235,9 @@ function buildFilterGraph(boxes, videoWidth, videoHeight) {
     const y = Math.round(box.y * videoHeight);
     const w = Math.round(box.width * videoWidth);
     const h = Math.round(box.height * videoHeight);
-    const radius = Math.max(1, box.blurIntensity);
+    // Chroma planes in yuv420p are half-size, so max safe radius = floor(min(w,h) / 4)
+    const maxRadius = Math.floor(Math.min(w, h) / 4);
+    const radius = Math.max(1, Math.min(box.blurIntensity, maxRadius));
     // Match canvas passes: Math.min(3, Math.max(1, Math.ceil(intensity / 7)))
     const power = Math.min(3, Math.max(1, Math.ceil(box.blurIntensity / 7)));
     const enable = `between(t,${box.startTime.toFixed(3)},${box.endTime.toFixed(3)})`;
