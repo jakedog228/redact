@@ -34,9 +34,11 @@ export function initTimeline() {
   }, { passive: false });
 
   // Scrubbing
-  rulerCanvas.addEventListener('mousedown', startScrub);
-  document.addEventListener('mousemove', doScrub);
-  document.addEventListener('mouseup', endScrub);
+  rulerCanvas.addEventListener('pointerdown', startScrub);
+  document.addEventListener('pointermove', doScrub);
+  document.addEventListener('pointerup', endScrub);
+  document.addEventListener('pointercancel', endScrub);
+  rulerCanvas.style.touchAction = 'none';
 
   subscribe('SET_TIME', updatePlayhead);
   subscribe('SET_ZOOM', () => { drawRuler(); updatePlayhead(); });

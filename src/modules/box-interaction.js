@@ -14,13 +14,14 @@ let dragBoxStart = null;
 export function initBoxInteraction() {
   const canvas = getCanvasElement();
 
-  canvas.addEventListener('mousedown', onMouseDown);
-  canvas.addEventListener('mousemove', onMouseMove);
-  // mouseup and mousemove during drag are handled at window level
+  canvas.addEventListener('pointerdown', onPointerDown);
+  canvas.addEventListener('pointermove', onPointerMove);
+  // pointerup and pointermove during drag are handled at window level
   // to allow dragging outside canvas bounds
+  canvas.style.touchAction = 'none'; // prevent browser touch gestures
 }
 
-function getMouseNormalized(e, clampToBounds = false) {
+function getPointerNormalized(e, clampToBounds = false) {
   const canvas = getCanvasElement();
   const rect = canvas.getBoundingClientRect();
   let x = (e.clientX - rect.left) * (canvas.width / rect.width);
@@ -34,8 +35,8 @@ function getMouseNormalized(e, clampToBounds = false) {
   return canvasToNormalized(x, y);
 }
 
-function onMouseDown(e) {
-  const pos = getMouseNormalized(e);
+function onPointerDown(e) {
+  const pos = getPointerNormalized(e);
   const tool = getState('tool');
 
   if (tool === TOOLS.DRAW) {
@@ -94,31 +95,33 @@ function onMouseDown(e) {
 }
 
 function startWindowDragListeners() {
-  window.addEventListener('mousemove', onWindowMouseMove);
-  window.addEventListener('mouseup', onWindowMouseUp);
+  window.addEventListener('pointermove', onWindowPointerMove);
+  window.addEventListener('pointerup', onWindowPointerUp);
+  window.addEventListener('pointercancel', onWindowPointerUp);
 }
 
 function stopWindowDragListeners() {
-  window.removeEventListener('mousemove', onWindowMouseMove);
-  window.removeEventListener('mouseup', onWindowMouseUp);
+  window.removeEventListener('pointermove', onWindowPointerMove);
+  window.removeEventListener('pointerup', onWindowPointerUp);
+  window.removeEventListener('pointercancel', onWindowPointerUp);
 }
 
-function onWindowMouseMove(e) {
+function onWindowPointerMove(e) {
   if (!dragging) return;
   // Use clamped coordinates so dragging outside canvas clamps to edge
-  const pos = getMouseNormalized(e, true);
+  const pos = getPointerNormalized(e, true);
   handleDragMove(pos);
 }
 
-function onWindowMouseUp(e) {
+function onWindowPointerUp(e) {
   if (!dragging) return;
   // Use clamped coordinates for final position
-  const pos = getMouseNormalized(e, true);
+  const pos = getPointerNormalized(e, true);
   handleDragEnd(pos);
   stopWindowDragListeners();
 }
 
-function onMouseMove(e) {
+function onPointerMove(e) {
   if (!dragging) {
     updateCursor(e);
     return;
@@ -207,7 +210,7 @@ function updateCursor(e) {
     return;
   }
 
-  const pos = getMouseNormalized(e);
+  const pos = getPointerNormalized(e);
   const selectedId = getState('selectedBoxId');
   const boxes = getState('boxes');
   const { width: cw, height: ch } = getCanvasSize();

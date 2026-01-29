@@ -59,7 +59,7 @@ function renderSpans() {
     dragHandle.className = 'span-drag-handle';
     dragHandle.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>';
     dragHandle.title = 'Drag to reorder';
-    dragHandle.addEventListener('mousedown', (e) => {
+    dragHandle.addEventListener('pointerdown', (e) => {
       e.stopPropagation();
       startReorderDrag(e, index);
     });
@@ -73,7 +73,7 @@ function renderSpans() {
     span.style.left = left + 'px';
     span.style.width = (right - left) + 'px';
 
-    span.addEventListener('mousedown', (e) => {
+    span.addEventListener('pointerdown', (e) => {
       e.stopPropagation();
       dispatch('SELECT_BOX', box.id);
       startSpanDrag(e, box, 'move', duration, totalWidth);
@@ -82,7 +82,7 @@ function renderSpans() {
     // Left handle (start time)
     const leftHandle = document.createElement('div');
     leftHandle.className = 'span-handle span-handle-left';
-    leftHandle.addEventListener('mousedown', (e) => {
+    leftHandle.addEventListener('pointerdown', (e) => {
       e.stopPropagation();
       startSpanDrag(e, box, 'start', duration, totalWidth);
     });
@@ -90,7 +90,7 @@ function renderSpans() {
     // Right handle (end time)
     const rightHandle = document.createElement('div');
     rightHandle.className = 'span-handle span-handle-right';
-    rightHandle.addEventListener('mousedown', (e) => {
+    rightHandle.addEventListener('pointerdown', (e) => {
       e.stopPropagation();
       startSpanDrag(e, box, 'end', duration, totalWidth);
     });
@@ -123,10 +123,10 @@ function startReorderDrag(e, fromIndex) {
   const lanes = spansContainer.querySelectorAll('.span-lane');
   lanes[fromIndex].classList.add('dragging');
 
-  const onMove = (me) => {
+  const onMove = (pe) => {
     // Calculate which lane we're over based on Y position
     const containerRect = spansContainer.getBoundingClientRect();
-    const y = me.clientY - containerRect.top + spansContainer.parentElement.scrollTop;
+    const y = pe.clientY - containerRect.top + spansContainer.parentElement.scrollTop;
     const newIndex = Math.floor(y / 28);
     const clampedIndex = clamp(newIndex, 0, lanes.length - 1);
 
@@ -142,8 +142,9 @@ function startReorderDrag(e, fromIndex) {
   };
 
   const onUp = () => {
-    document.removeEventListener('mousemove', onMove);
-    document.removeEventListener('mouseup', onUp);
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', onUp);
+    document.removeEventListener('pointercancel', onUp);
 
     // Clean up classes
     const lanes = spansContainer.querySelectorAll('.span-lane');
@@ -162,8 +163,9 @@ function startReorderDrag(e, fromIndex) {
     dragOverIndex = null;
   };
 
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseup', onUp);
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+  document.addEventListener('pointercancel', onUp);
 }
 
 function startSpanDrag(e, box, edge, duration, totalWidth) {
@@ -173,8 +175,8 @@ function startSpanDrag(e, box, edge, duration, totalWidth) {
   const origEnd = box.endTime;
   const spanDuration = origEnd - origStart;
 
-  const onMove = (me) => {
-    const dx = me.clientX - startX;
+  const onMove = (pe) => {
+    const dx = pe.clientX - startX;
     const dt = (dx / totalWidth) * duration;
 
     if (edge === 'move') {
@@ -196,10 +198,12 @@ function startSpanDrag(e, box, edge, duration, totalWidth) {
   };
 
   const onUp = () => {
-    document.removeEventListener('mousemove', onMove);
-    document.removeEventListener('mouseup', onUp);
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', onUp);
+    document.removeEventListener('pointercancel', onUp);
   };
 
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseup', onUp);
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+  document.addEventListener('pointercancel', onUp);
 }
