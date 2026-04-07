@@ -38,11 +38,13 @@ export function initKeyboard() {
     }
 
     if (matchesKeybind(e, 'select')) {
-      // Check for paste first (Ctrl+V)
-      if (matchesKeybind(e, 'paste') && clipboard) {
-        e.preventDefault();
-        pushHistory();
-        duplicateBox(clipboard);
+      // Check for paste first (Ctrl+V) — only block if we have a box to paste
+      if (matchesKeybind(e, 'paste')) {
+        if (clipboard) {
+          e.preventDefault();
+          pushHistory();
+          duplicateBox(clipboard);
+        }
         return;
       }
       e.preventDefault();
@@ -92,10 +94,11 @@ export function initKeyboard() {
       return;
     }
 
-    // Paste
+    // Paste — only block default if we have an internal box to paste,
+    // otherwise let the browser 'paste' event fire for clipboard images
     if (matchesKeybind(e, 'paste')) {
-      e.preventDefault();
       if (clipboard) {
+        e.preventDefault();
         pushHistory();
         duplicateBox(clipboard);
       }

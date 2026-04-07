@@ -1,4 +1,4 @@
-import { dispatch } from '../state.js';
+import { dispatch, getState } from '../state.js';
 import { ACCEPTED_VIDEO_TYPES, ACCEPTED_IMAGE_TYPES, TOOLS, BOX_TYPES } from '../constants.js';
 import { clearHistory } from './history.js';
 
@@ -29,6 +29,22 @@ export function initUpload() {
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) handleFile(file);
+  });
+
+  // Handle Ctrl+V paste of images from clipboard (upload screen only)
+  document.addEventListener('paste', (e) => {
+    if (getState('mediaType')) return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) handleFile(file);
+        return;
+      }
+    }
   });
 }
 
